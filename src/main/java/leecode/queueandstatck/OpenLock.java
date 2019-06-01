@@ -33,24 +33,23 @@ public class OpenLock {
     public static void main(String[] args) {
         String[] deadends = {"8887", "8889", "8878", "8898", "8788", "8988", "7888", "9888"};
         String target = "8888";
+        int i = openLock(deadends, target);
+        System.out.println(i);
 
 
     }
 
 
-    public int openLock(String[] deadends, String target) {
-        Set<String> dds = new HashSet<>();
+    public static int openLock(String[] deadends, String target) {
         // 去重
-        for (String deadend : deadends) {
-            dds.add(deadend);
-        }
+        Set<String> dds = new HashSet<>(Arrays.asList(deadends));
         // 初始化开始状态
         String init = "0000";
         // 判断极端特例
-        if (dds.contains(init)||dds.contains(target)){
+        if (dds.contains(init) || dds.contains(target)) {
             return -1;
         }
-        if (init.equals(target)){
+        if (init.equals(target)) {
             return 0;
         }
         int result = 0;
@@ -60,12 +59,35 @@ public class OpenLock {
         Queue<String> q = new LinkedList<>();
         q.add(init);
         // 只要队列中不是空就一直循环  如果全部循环没有目标 返回失败
-        while(!q.isEmpty()){
-          result++;
+        while (!q.isEmpty()) {
+            result++;
             int size = q.size();
             // 循环队列
             for (int i = 0; i < size; i++) {
+                // 将队列中头部的元素移除 并返回 如果为空返回null
+                String curStr = q.poll();
+                if (curStr==null){
+                    return -1;
+                }
+                // 循环每个字符
+                for (int j = 0; j < 4; j++) {
+                    // 开始为1 dif<=9, 间隔 8
+                    for (int dif = 1; dif <=9 ;dif+=8) {
+                        char[] ca = curStr.toCharArray();
+                        ca[j] = (char) ((ca[j]-'0'+dif)%10+'0');
+                        String s = new String(ca);
+                        // 如果目标包含s  则查询成功
+                        if (target.equals(s)){
+                            return result;
+                        }
+                        // 如果 没有死亡列表里没有 并且还没有 遍历过  加入队列 并标记为已访问
+                        if (!dds.contains(s)&&!visited.contains(s)){
+                            q.add(s);
+                            visited.add(s);
+                        }
+                    }
 
+                }
 
             }
 
@@ -73,3 +95,4 @@ public class OpenLock {
         return -1;
 
     }
+}
