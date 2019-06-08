@@ -32,17 +32,17 @@ public class PerfectSquare {
             return 0;
         }
         // 构建了一个链表
-        LinkedList<Pair<Integer, Integer>> queue = new LinkedList<>();
+        LinkedList<Node> queue = new LinkedList<>();
         // 在尾部添加了一个 n ,0
-        queue.addLast(new Pair<>(n, 0));
+        queue.addLast(new Node(n, 0));
         // 是否已访问的记录
         boolean[] visited = new boolean[n + 1];
         visited[n] = true;
 
         while (!queue.isEmpty()) {
-            Pair<Integer, Integer> front = queue.removeFirst();
-            Integer num = front.getKey();
-            Integer step = front.getValue();
+            Node node = queue.removeFirst();
+            int num = node.getVal();
+            int step = node.getStep();
             if (num == 0) {
                 return step;
             }
@@ -52,7 +52,7 @@ public class PerfectSquare {
                     if (a == 0) {
                         return step + 1;
                     }
-                    queue.addLast(new Pair<>(num - i * i, step + 1));
+                    queue.addLast(new Node(num - i * i, step + 1));
                     visited[num - i * i] = true;
                 }
             }
@@ -60,4 +60,23 @@ public class PerfectSquare {
         return 0;
 
     }
+
+    static class Node {
+        int val;
+        int step;
+
+        Node(int val, int step) {
+            this.val = val;
+            this.step = step;
+        }
+
+        int getVal() {
+            return val;
+        }
+
+        int getStep() {
+            return step;
+        }
+    }
+
 }
