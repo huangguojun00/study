@@ -1,4 +1,4 @@
-package leecode.queueandstatck;
+package leecode.queue;
 
 import javafx.util.Pair;
 

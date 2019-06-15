@@ -1,4 +1,4 @@
-package leecode.queueandstatck;
+package leecode.queue;
 
 /**
  * @Author Huang Guojun
